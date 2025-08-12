@@ -1,9 +1,15 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
 import Loan from '@/models/Loan';
+import { getAuthenticatedUser, createUnauthorizedResponse } from '@/lib/auth-helpers';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const user = await getAuthenticatedUser(request);
+    if (!user) {
+      return createUnauthorizedResponse();
+    }
+
     await connectToDatabase();
     const loans = await Loan.find({});
     

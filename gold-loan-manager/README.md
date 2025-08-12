@@ -4,6 +4,12 @@ A comprehensive Next.js application for managing gold loans for individual users
 
 ## Features
 
+### 🔐 Authentication & Security
+- **Single User System**: Secure single-user authentication
+- **Protected Routes**: All API endpoints require authentication
+- **Session Management**: JWT-based session handling with NextAuth.js
+- **Password Security**: Bcrypt password hashing for security
+
 ### 🏦 Loan Management
 - **Add Loans**: Create loans taken or given with detailed information
 - **Track Gold**: Monitor gold quantity and purity for each loan
@@ -67,13 +73,15 @@ A comprehensive Next.js application for managing gold loans for individual users
    Create a `.env.local` file in the root directory:
    ```env
    MONGODB_URI=mongodb://localhost:27017/gold-loan-manager
-   NEXTAUTH_SECRET=your-secret-key-here
+   NEXTAUTH_SECRET=gold-loan-manager-secret-key-2024
    NEXTAUTH_URL=http://localhost:3000
    ```
 
    **For MongoDB Atlas (Cloud):**
    ```env
    MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/gold-loan-manager
+   NEXTAUTH_SECRET=gold-loan-manager-secret-key-2024
+   NEXTAUTH_URL=http://localhost:3000
    ```
 
 4. **Start MongoDB** (if running locally)
@@ -93,9 +101,15 @@ A comprehensive Next.js application for managing gold loans for individual users
    npm run dev
    ```
 
-6. **Open your browser**
+6. **Set up the default user account**
    
-   Navigate to [http://localhost:3000](http://localhost:3000)
+   Navigate to [http://localhost:3000/setup](http://localhost:3000/setup) and click "Create Default User"
+
+7. **Login to the application**
+   
+   Navigate to [http://localhost:3000/login](http://localhost:3000/login) and use:
+   - **Email:** admin@goldloan.com
+   - **Password:** admin123
 
 ## Project Structure
 
@@ -119,15 +133,21 @@ src/
 
 ## API Endpoints
 
+**Note: All API endpoints require authentication. Include the session cookie or JWT token with requests.**
+
+### Authentication
+- `GET/POST /api/auth/[...nextauth]` - NextAuth.js authentication endpoints
+- `POST /api/setup-user` - Create default user (one-time setup)
+
 ### Loans
-- `GET /api/loans` - Fetch all loans
-- `POST /api/loans` - Create a new loan
-- `GET /api/loans/[id]` - Get loan by ID
-- `PUT /api/loans/[id]` - Update loan
-- `DELETE /api/loans/[id]` - Delete loan
+- `GET /api/loans` - Fetch all loans (requires auth)
+- `POST /api/loans` - Create a new loan (requires auth)
+- `GET /api/loans/[id]` - Get loan by ID (requires auth)
+- `PUT /api/loans/[id]` - Update loan (requires auth)
+- `DELETE /api/loans/[id]` - Delete loan (requires auth)
 
 ### Analytics
-- `GET /api/analytics` - Get comprehensive P&L and portfolio analytics
+- `GET /api/analytics` - Get comprehensive P&L and portfolio analytics (requires auth)
 
 ## Database Schema
 

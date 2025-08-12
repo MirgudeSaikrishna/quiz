@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
 import Loan from '@/models/Loan';
+import { getAuthenticatedUser, createUnauthorizedResponse } from '@/lib/auth-helpers';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
+    const user = await getAuthenticatedUser(request);
+    if (!user) {
+      return createUnauthorizedResponse();
+    }
+
     await connectToDatabase();
     const loan = await Loan.findById(params.id);
     
@@ -32,6 +38,11 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    const user = await getAuthenticatedUser(request);
+    if (!user) {
+      return createUnauthorizedResponse();
+    }
+
     await connectToDatabase();
     const body = await request.json();
     
@@ -63,6 +74,11 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    const user = await getAuthenticatedUser(request);
+    if (!user) {
+      return createUnauthorizedResponse();
+    }
+
     await connectToDatabase();
     const loan = await Loan.findByIdAndDelete(params.id);
     

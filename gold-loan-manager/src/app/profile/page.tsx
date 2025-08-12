@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, TrendingUp, TrendingDown, DollarSign, Scale, Calendar, PieChart } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
+import AuthGuard from '@/components/AuthGuard';
+import Header from '@/components/Header';
 
 interface Analytics {
   summary: {
@@ -135,23 +137,19 @@ export default function ProfilePage() {
   const mostExpensiveLoans = getMostExpensiveLoans();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link
-                href="/"
-                className="mr-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors duration-200"
-              >
-                <ArrowLeft size={20} />
-              </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Profile & P&L Analysis</h1>
-            </div>
-          </div>
+    <AuthGuard>
+      <div className="min-h-screen bg-gray-50">
+        <Header title="Profile & P&L Analysis" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <Link
+            href="/"
+            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200 mb-6"
+          >
+            <ArrowLeft size={20} className="mr-2" />
+            Back to Dashboard
+          </Link>
         </div>
-      </header>
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
@@ -421,6 +419,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

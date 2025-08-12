@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, TrendingUp, TrendingDown, DollarSign, Scale } from 'lucide-react';
+import { Plus, TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
 import Link from 'next/link';
+import AuthGuard from '@/components/AuthGuard';
+import Header from '@/components/Header';
 
 interface Analytics {
   summary: {
@@ -73,32 +75,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Scale className="h-8 w-8 text-yellow-600 mr-3" />
-              <h1 className="text-2xl font-bold text-gray-900">Gold Loan Manager</h1>
-            </div>
-            <nav className="flex space-x-4">
-              <Link
-                href="/loans"
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                Manage Loans
-              </Link>
-              <Link
-                href="/profile"
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                Profile & P&L
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+    <AuthGuard>
+      <div className="min-h-screen bg-gray-50">
+        <Header title="Gold Loan Manager" />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -279,9 +258,10 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-          )}
-        </div>
-      </main>
-    </div>
-  );
-}
+                     )}
+         </div>
+       </main>
+       </div>
+     </AuthGuard>
+   );
+ }
